@@ -1,0 +1,565 @@
+\documentclass[uplatex,dvipdfmx]{jsarticle}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{framed}
+\usepackage{braket}
+\usepackage{bm}
+\usepackage{mathrsfs}
+\usepackage{mathabx}
+\usepackage{accents}
+\usepackage{tocloft}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{url}
+\usepackage{color}
+\usepackage{xifthen}
+\usepackage{xcolor}
+\usepackage{framed}
+\usepackage{mathtools}
+\usepackage[explicit]{titlesec}
+\usepackage[normalem]{ulem}
+\usepackage[dvipdfmx]{hyperref}
+\usepackage{pxjahyper}
+\usepackage{mdframed}
+\usepackage[backend=biber,style=numeric,sorting=none,doi=false,isbn=false,url=false]{biblatex}
+\addbibresource{bib.bib}
+
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{cd}
+
+\newcommand{\scrN}{\mathcal{N}}
+\newcommand{\scrC}{\mathcal{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\range}{\operatorname{ran}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\append}{{}^\frown}
+\newcommand{\boldsig}{\boldsymbol{\Sigma}}
+\newcommand{\boldpi}{\boldsymbol{\Pi}}
+\newcommand{\bolddelta}{\boldsymbol{\Delta}}
+\newcommand{\Ordinals}{\mathrm{On}}
+\newcommand\forces{\Vdash}
+\newcommand\notforces{\nVdash}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\intr}{\operatorname{int}}
+\newcommand{\ro}{\operatorname{ro}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\frakt}{\mathfrak{t}}
+\newcommand{\s}{\mathfrak{s}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\frakc}{\mathfrak{c}}
+\newcommand{\Pow}{\mathcal{P}}
+\newcommand{\fin}{\mathrm{fin}}
+\newcommand{\OR}{\mathbin{\text{または}}}
+\newcommand{\AND}{\mathbin{\text{かつ}}}
+\newcommand{\down}{\hspace{-0.2em}\downarrow}
+
+\renewcommand\emptyset{\varnothing}
+\renewcommand\subset{\subseteq}
+\renewcommand{\setminus}{\smallsetminus}
+
+\def\pair<#1>{\langle #1 \rangle}
+
+\newcommand{\needtocheck}[1][]{%
+	\ifthenelse{\equal{#1}{}}{%
+		\textcolor{blue}{[要チェック]}%
+	}{%
+		\textcolor{blue}{[要チェック: #1]}%
+	}%
+}
+
+\newcommand{\todo}[1][]{%
+	\ifthenelse{\equal{#1}{}}{%
+		\textcolor{red}{[TODO]}%
+	}{%
+		\textcolor{red}{[TODO: #1]}%
+	}%
+}
+
+\theoremstyle{definition}
+\newtheorem{thm}{定理}
+\newtheorem*{thm*}{定理}
+\newtheorem{defi}[thm]{定義}
+\newtheorem*{defi*}{定義}
+\newtheorem{lem}[thm]{補題}
+\newtheorem*{lem*}{補題}
+\newtheorem{fact}[thm]{事実}
+\newtheorem*{fact*}{事実}
+\newtheorem*{formula*}{公式}
+\newtheorem{prop}[thm]{命題}
+\newtheorem*{prop*}{命題}
+\newtheorem{exm}[thm]{例}
+\newtheorem*{exm*}{例}
+\newtheorem{rmk}[thm]{注意}
+\newtheorem*{rmk*}{注意}
+\newtheorem{cor}[thm]{系}
+\newtheorem*{cor*}{系}
+\newtheorem*{notation*}{記法}
+\renewcommand{\proofname}{証明}
+\newenvironment{claim}[1]{\par\noindent\underline{主張:}\space#1}{}
+\newenvironment{claimproof}[1]{\par\noindent∵) \space#1}{\hfill //}
+
+\newtheoremstyle{named}{}{}{
+}{}{\bfseries}{.}{.5em}{#1 \thmnote{#3}}
+\theoremstyle{named}
+\newtheorem*{namedthm}{Theorem}
+\newtheorem*{namedcor}{Corollary}
+
+\renewenvironment{leftbar}[1][\hsize]
+{%
+\def\FrameCommand
+{%
+{\color{black}\vrule width 1pt}%
+\hspace{0pt}%
+\fboxsep=\FrameSep\colorbox{white}%
+}%
+\MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}%
+}
+{\endMakeFramed}
+
+%\definecolor{reasontext}{rgb}{0.2,0.2,0.2}
+\definecolor{reasontext}{rgb}{0,0,0}
+\definecolor{reasonbg}{rgb}{0.9,0.9,0.9}
+
+%\newenvironment{reason}
+%{\begin{center}
+%\begin{tabular}{p{0.9\textwidth}}
+%\rowcolor{reasonbg}
+%\color{reasontext}
+%\small
+%}
+%{
+%\end{tabular} 
+%\end{center}
+%}
+
+\newenvironment{reason}
+{
+    \begin{mdframed}[backgroundcolor=reasonbg,linewidth=0]
+    \color{reasontext}
+    \small
+}
+{
+    \end{mdframed}
+}
+
+\newcommand{\parahead}[1]{{\bfseries \uline{#1}}．}
+
+\title{分配数$\h$ — ブール代数の分配法則と点列コンパクトの直積}
+\author{でぃぐ (@fujidig)}
+\date{2021年2月20日}
+
+\setcounter{section}{-1}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+次の二つを考えよう：「半順序集合$[\omega]^\omega$を完備化して得られるブール代数において分配法則がいくつの個数まで成り立つか」「点列コンパクト性が直積で保たれる個数がいくつまでか」．実はこの2つが同じ基数を定める．本稿ではこのことを見る．
+\end{abstract}
+
+\tableofcontents
+
+\vspace{0.3cm}
+
+\section{用語など}
+
+本稿には強制法の知識を仮定した部分もあるが，知らない人はその部分は飛ばしてよい．
+本稿ではZFCを仮定する．
+$\omega$は自然数全体の集合，$\frakc$は連続体濃度$2^{\aleph_0}$を表す．
+
+ブール代数の演算については最小上界に$+$や$\sum$を使い，最大下界に$\cdot$や$\prod$を使い，補元を上付きのバーで表す．ブール代数$\B$についてその$0$以外の元の部分を$\B^+=\B\setminus\{0\}$と書く．
+
+半順序集合$(\P, \le)$には下に閉じている集合を開集合とする位相を入れる．これを{\bfseries 下方位相}という．その意味で開や稠密という用語を使う．つまり$A \subset \P$が{\bfseries 開}とは$\forall p \in A \ \forall q \le p\ (q \in A)$となること，$A \subset \P$が{\bfseries 稠密}とは$\forall p \in \P\ \exists q \in A\ (q \le p)$となることを言う．
+半順序集合$(\P, \le)$の2元$p, q$について$p \parallel q$という関係を$\exists r \in \P\ (r \le p, q)$のことと定める．
+$p \perp q$は$\neg (p \parallel q)$のこととする．
+半順序集合$(\P, \le)$が{\bfseries 分離的}であるとは$\forall p, q \in \P\ (q \le p \Leftrightarrow \forall r \le q\ (r \parallel p))$となることを言う．
+半順序集合$(\P, \le)$の部分集合$A$について$A \down = \{ q \in \P : \exists p \in A\ (q \le p) \}$と書く．$\P$の点$p$について$p \down$は$\{p\} \down$を意味する．
+
+位相空間$X$の部分集合$A$が{\bfseries 正則開集合}とは$A = \intr \cl A$を満たすことを言う．$X$の正則開集合全体を$\ro(X)$と書く．これは包含を順序として完備ブール代数をなす．半順序集合$(\P, \le)$に対し，$\P$に下方位相を入れたときのブール代数$\ro(\P)$を$\P$の{\bfseries 完備化}という．$i_\P: \P \to \ro(\P); p \mapsto \intr \cl p \down$を完備化写像という．
+
+$[\omega]^\omega$は$\omega$の無限部分集合全体を表し，$[\omega]^{<\omega}$は$\omega$の有限部分集合全体を表す．
+
+\section{ブール代数の分配数$\h(\B)$}
+
+$\B$を完備ブール代数とする．すると次の形の分配法則は常に成立する．
+
+\[
+\left(\sum_{i \in I} b_i\right) \cdot \left(\sum_{j \in J} c_j\right) = \sum_{(i, j) \in I\times J} (b_i \cdot c_j)
+\]
+
+\begin{reason}
+$(\because)$
+まず$(\sum_{i \in I} b_i) \cdot c = \sum_{i \in I} (b_i \cdot c)$を示す．
+各$i$について$b_i \cdot c \le b_i$なので$i$を動かして上限をとると$\sum_i (b_i \cdot c) \le \sum_i b_i$.同様に，$\sum_i b_i \cdot c \le c$でもあるので，$\sum_i (b_i \cdot c) \le (\sum_i b_i) \cdot c$.
+
+逆向きの不等号を示そう．
+$b_i \le \overline{c} + b_i = \overline{c} + b_i \cdot c$である．よって両辺上限をとって
+\[
+\sum_i b_i \le \sum_i (\overline{c} + b_i \cdot c) = \overline{c} + \sum_i b_i \cdot c.
+\]
+この両辺に$c$を掛けると
+\begin{align*}
+c \cdot \sum_i b_i &\le c \cdot (\overline{c} + \sum_i b_i \cdot c) \\
+&= c \cdot \overline{c} + c \cdot\sum_i b_i \cdot c \\
+&= c \cdot \sum_i b_i \cdot c \\
+&\le \sum_i b_i \cdot c
+\end{align*}
+となる．
+
+さて，上の事実を2回使うと
+\begin{align*}
+\left(\sum_i b_i\right) \cdot \left(\sum_j c_j\right) &= \sum_i \left(b_i \cdot \sum_j c_j\right) \\
+&= \sum_i \left(\sum_j b_i \cdot c_j\right) \\
+&= \sum_{i,j} \left( b_i \cdot c_j\right)
+\end{align*}
+となる．
+\end{reason}
+
+\begin{defi*}
+$\kappa$を基数とする．$\B$が{\bfseries $\kappa$分配的}であるとは，どんな添字集合の族$(I_\alpha : \alpha < \kappa)$と$\B$の元の族$(b_{\alpha,i} : \alpha < \kappa, i \in I_\alpha)$についても
+\[
+\prod_{\alpha < \kappa} \sum_{i \in I_\alpha} b_{\alpha,i} = \sum_{f \in \prod_{\alpha < \kappa} I_\alpha} \prod_{\alpha < \kappa} b_{\alpha,f(\alpha)}
+\]
+を満たすことを言う．
+$\B$の{\bfseries 分配数} $\h(\B)$とは$\B$が$\kappa$分配的でない最小の$\kappa$である．
+上の事実より分配数は必ず無限である．
+\end{defi*}
+
+\begin{prop}\cite[Lemma 7.16.]{jech2007set}
+$\B$を完備ブール代数とする．次は同値．
+\begin{enumerate}
+    \item $\B$は$\kappa$分配的．
+    \item $\B^+$の稠密開集合の$\kappa$個の共通部分はまた稠密開集合である．
+\end{enumerate}
+\end{prop}
+\begin{proof}
+$1 \rightarrow 2$．$D_\alpha$ (for $\alpha < \kappa$)を$\B^+$の稠密開集合とする．$b \in \B^+$とする．
+$(b_{\alpha,i} : \alpha < \kappa, i \in I_\alpha)$を$(b \cdot c : \alpha < \kappa, c \in D_\alpha)$とおく．すると$\kappa$分配的の定義から
+\begin{equation}
+\prod_{\alpha < \kappa} \sum_{c \in D_\alpha} (b \cdot c) = \sum_{f \in \prod_\alpha D_\alpha} \prod_{\alpha < \kappa} b \cdot f(\alpha) \label{bc}
+\end{equation}
+となる．$D_\alpha$は稠密なので$\sum_{c \in D_\alpha} c = 1$である．よって式(\ref{bc})の左辺は$b \ne 0$である．
+したがって，右辺を見ると，ある$f \in \prod_\alpha D_\alpha$があって$\prod_{\alpha < \kappa} b \cdot f(\alpha)$が非零である．
+ところが，$\prod_{\alpha < \kappa} b \cdot f(\alpha)$は$b$以下の$\bigcap_{\alpha < \kappa} D_\alpha$の元である．
+よって，$\bigcap_{\alpha < \kappa} D_\alpha$の稠密性が示された．
+
+$2 \rightarrow 1$．
+$B$の元の族$(b_{\alpha,i} : \alpha < \kappa, i \in I_\alpha)$をとる．
+まず示すべき等式の片方向であるところの
+\begin{equation}
+\sum_{f \in \prod_{\alpha < \kappa} I_\alpha} \prod_{\alpha < \kappa} b_{\alpha,f(\alpha)} \le \prod_{\alpha < \kappa} \sum_{i \in I_\alpha} b_{\alpha,i} \label{hoge}
+\end{equation}
+はいつでも成り立つことに注意する．
+実際，各$f \in \prod_{\alpha < \kappa}$と$\alpha < \kappa$について
+\[
+\prod_{\alpha < \kappa} b_{\alpha,f(\alpha)} \le b_{\alpha,f(\alpha)} \le \sum_{i \in I_\alpha} b_{\alpha,i}
+\]
+なので，$\alpha$について下限をとって
+\[
+\prod_{\alpha < \kappa} b_{\alpha,f(\alpha)} \le \prod_{\alpha < \kappa} \sum_{i \in I_\alpha} b_{\alpha,i}
+\]
+である．そこで$f$について上限をとって，式(\ref{hoge})を得る．
+
+さて，$u = \prod_{\alpha < \kappa} \sum_{i \in I_\alpha} b_{\alpha,i}$とおこう．$\alpha < \kappa$に対して
+\[
+D_\alpha = \{ b \in \B^+ : \exists i \in I_\alpha (b \le b_{\alpha,i}) \} \cup \{ b \in \B^+ : b \perp u \}
+\]
+とおくと$D_\alpha$は稠密開集合である．
+
+\begin{reason}
+$(\because)$ 実際，$b \in \B^+$とする．$b \perp u$ならばそれでよい．
+$b \parallel u$すなわち$b \cdot u \ne 0$とする．
+$b \cdot u \le u \le \sum_i b_{\alpha,i}$なので$0 \ne b \cdot u = b \cdot u \cdot  \sum_i b_{\alpha,i} = \sum_i b \cdot u \cdot b_{\alpha,i}$である．
+したがってある$i$があって，$b \cdot u \cdot b_{\alpha,i} \ne 0$だが，これは$b$以下の$D_\alpha$の元である．よって$D_\alpha$は稠密．
+\end{reason}
+
+したがって仮定より$D = \bigcap_{\alpha < \kappa} D_\alpha$は稠密である．よって$\sum_{d \in D} d \cdot u = u$．今$D$の元$d$を考える．
+$d \cdot u$はどの$D_\alpha$の元でもあるが，$d \cdot u \le u$より$d \cdot u$は$D_\alpha$の条件のうち前半を満たす．すなわちある$i \in I_\alpha$があって$d \cdot u \le b_{\alpha,i}$である．
+ゆえに，$f \in \prod_\alpha I_\alpha$があって，どの$\alpha$についても$d \cdot u \le b_{\alpha,f(\alpha)}$となる．つまり，
+\[
+d \cdot u \le \prod_{\alpha} b_{\alpha,f(\alpha)} \le \sum_f \prod_{\alpha} b_{\alpha,f(\alpha)}
+\]
+である．この式で$d \in D$について上限をとれば
+\[
+u \le \sum_f \prod_{\alpha} b_{\alpha,f(\alpha)}
+\]
+となる．
+\end{proof}
+
+そこで次の定義をする．
+
+\begin{defi*}
+$\P$を半順序集合とする．
+$\P$が{\bfseries $\kappa$分配的}であるとは$\P$の稠密開集合の$\kappa$個の共通部分はまた稠密開集合となることとする．$\P$の分配数$\h(\P)$とは$\P$が$\kappa$分配的でない最小の$\kappa$である．
+\end{defi*}
+
+\begin{prop}
+$\P$を分離的半順序集合，$\B$を$\P$の完備化とする．このとき
+$\P$が$\kappa$分配的であるためには$\B$が$\kappa$分配的であることが必要十分．
+\end{prop}
+\begin{proof}
+$i: \P \to \B$を完備化写像とする．
+$\P$が$\kappa$分配的であると仮定する．
+$E_\alpha \subset \B^+$ (for $\alpha < \kappa$)を稠密開集合，$b \in \B^+$とする．$p \in P$で$i(p) \le b$となるものをとる．
+$i^{-1}(E_\alpha)$は$\P$の稠密開集合である．
+よって仮定より$q \le \bigcap_{\alpha < \kappa} i^{-1}(E_\alpha) \cap p\down$がとれる．このとき$i(q)$は$b$の拡大でどの$E_\alpha$にも属すので，$\B$が$\kappa$分配的であることがわかった．
+
+逆に$\B$が$\kappa$分配的であると仮定する．
+$D_\alpha \subset \P$ (for $\alpha < \kappa$)を稠密開集合，$p \in \P$とする．
+このとき$i(D_\alpha)\down$は$\B^+$の稠密開集合である．
+そこで仮定より$b \in \bigcap_{\alpha < \kappa} i(D_\alpha)\down \cap i(p)\down$がとれる．$q \in P$で$i(q) \le b$なるものをとる．
+すると$\P$の分離性を使うと$i(q) \le i(p)$より$q \le p$が導かれる．同様に分離性により$q \in \bigcap_{\alpha < \kappa} D_\alpha$となる．
+\end{proof}
+
+\begin{defi*}
+半順序集合$\P$が{\bfseries $\kappa$閉}であるとは，$\P$の元の$\kappa$列$(p_\alpha : \alpha < \kappa)$であって単調減少($\alpha < \beta$ならば$p_\beta \le p_\alpha$)なものについて，この列のすべての要素の共通拡大$p$がとれることをいう．すなわちどの$\alpha < \kappa$についても$p \le p_\alpha$となる．
+\end{defi*}
+
+\begin{prop}
+$\P$を完備ブール代数とする．$\P$が$\kappa$閉であれば$\kappa$分配的である．
+\end{prop}
+\begin{proof}
+$\P$の$\kappa$個の稠密開集合$(D_\alpha : \alpha < \kappa)$を考える．$p_0 \in \P$を任意にとる．
+$p_0$の拡大でかつどの$D_\alpha$の元にもなっているものを見つければよい．
+帰納的に$(p_\alpha : \alpha \le \kappa)$を定める．
+$p_{\alpha + 1}$は$p_\alpha$の拡大でかつ$D_\alpha$に属するものとする．
+$p_\gamma$ ($\gamma$は極限順序数)は列のそこまでの要素たちの共通拡大とする．これは$\P$が$\kappa$閉なのでとれる．
+こうして構成された列の最終要素$p_\kappa$が欲しい元となる．
+\end{proof}
+
+以下この節の終わりまでは強制法を知らない人は飛ばしてよい．
+
+\begin{prop} \label{nonewreal} \cite[Theorem 15.6.]{jech2007set}
+$\P$を半順序集合とする．$\P$が$\kappa$分配的であれば$\P$による強制拡大で$\kappa$の部分集合は付け加わらない．
+\end{prop}
+\begin{proof}
+$\dot{f}$を$\P$名前，$p \in \P$とし，$p \forces \dot{f}: \kappa \to 2$を仮定する．
+$\alpha < \kappa$に対して$D_\alpha = \{ q \le p : \text{$q$は$\dot{f}(i)$の値を決める} \} \cup \{q \in \P : q \perp p \}$とおくと$D_\alpha$は稠密開集合である．よって仮定より$q \in \bigcap_{\alpha < \kappa} D_\alpha \cap p\down$がとれる．
+この$q$はグラウンドモデルに$\dot{f}$と等しい$\kappa$列があることを目撃する．よって証明された．(この定理の主張は$V$の中に値を持つ$\kappa$列を追加しないという結論に容易に一般化できる．)
+\end{proof}
+
+コーエン強制法$\C$の分配数は$\h(\C) = \aleph_0$である．なぜならコーエン強制法は実数 ($\omega$の部分集合)を付け加えるからである．ほかの実数を付け加える強制法 (ランダム強制法，ヘクラ―強制法などなど)も分配数は$\aleph_0$である．
+強制法$\P = \operatorname{Fn}(\omega_1, 2, \omega_1)$の分配数は$\h(\P) = \aleph_1$である．なぜなら$\P$は$\omega$閉であるので$\omega$分配的であり，$\P$は$\omega_1$の部分集合を追加するので$\aleph_1$分配的でないからである．
+
+\section{分配数$\h = \h([\omega]^\omega)$}
+
+分配数$\h(\P)$が非自明な基数になる半順序集合$\P$がある．それが$\P = ([\omega]^\omega, \subset^*)$である．
+ここに$\subset^*$は「ほとんど部分集合」という関係で$x \subset^* y$は$x \setminus y$が有限集合となることを意味する．
+この$\P$に対する$\h(\P)$を単に$\h$と書く．
+
+\begin{prop}
+$\aleph_1 \le \h \le \mathfrak{c}$.
+\end{prop}
+\begin{proof}
+$\aleph_1 \le \h$のためには$\P = ([\omega]^\omega, \subset^*)$が$\omega$閉なことを示せば十分である．
+そこで$(A_n : n \in \omega)$を$\P$の元の単調減少列とする．
+各$A_n$が無限なことと$\subset^*$の定義から各$n$について$A_0 \cap \dots \cap A_n$も無限集合である．そこで帰納的に自然数$a_n$たちを$a_n \in A_0 \cap \dots \cap A_n$かつ$a_n < a_{n+1}$となるようとる．すると$A = \{ a_n : n \in \omega \}$はどの$n$についても$A \subset^* A_n$を満たしている．
+
+$\h \le \mathfrak{c}$について．各$x \in [\omega]^\omega$について$D_x = \{ y \in [\omega]^\omega : y \subset^* x \OR y \subset^* x^\mathrm{c} \}$とおく．これは$\P$の稠密開集合である．これらは$\frakc$個の稠密開集合なので，その共通部分が稠密でないことを示せば$\h \le \mathfrak{c}$が導かれる．実際は共通部分が空なことを言う．$y \in \bigcap_{x \in [\omega]^\omega} D_x$があったとする．$y$の元を小さい順に数え上げた時の偶数番目の元となる自然数全体を$z$とおくと，$y \not \in D_z$である．よって矛盾．
+
+強制法を知っている人向けに別証明を書いておくと，$\P$がジェネリックフィルター$G \subset [\omega]^\omega$を付け加えることを使うと命題\ref{nonewreal}から$\h \le \mathfrak{c}$が従う．
+\end{proof}
+
+\begin{defi*}
+$A \subset [\omega]^\omega$が{\bfseries ほとんど互いに素である}とは$A$のどんな異なる2元$a, b \in A$についても$a \cap b$が有限集合となること．
+$A \subset [\omega]^\omega$が{\bfseries mad}であるとは$|A|$が無限でかつ$A$がほとんど互いに素でかつ，そのようなものの中で包含に関して極大なもののときを言う．
+\end{defi*}
+
+\begin{prop}\label{madprop}\cite[6.18 Proposition]{blass}
+$A \subset [\omega]^\omega$がmadならば
+\[
+A\down = \{ x \in [\omega]^\omega : \exists a \in A\ (x \subset^* a) \}
+\]
+は$[\omega]^\omega$の稠密開集合である．逆に$[\omega]^\omega$のどんな稠密開集合$D$についてもmadな$A\subset[\omega]^\omega$が存在し，$A\down \subset D$である．
+\end{prop}
+\begin{proof}
+1つ目の主張について．$A$をmadとする．このとき$A \down$が開集合であることは明らか．$A \down$の稠密性を示そう．$x \in [\omega]^\omega$とする．このとき$A$の極大性よりある$a \in A$があって$a \cap x$が無限集合となる．すると$a \cap x \in A\down$かつ$a \cap x \subset x$なのでよい．
+
+2つ目の主張について．$D$を稠密開集合とする．
+このとき$A_0 \subset D$を無限なほとんど互いに素な集合としてとる．これは，たとえば$x \in D$をとり，$x$の無限個の無限ピースへの分割をとればよい．
+ツォルンの補題より，$A \supseteq A_0$をほとんど互いに素な集合で$A \subset D$なるものであり，かつそのようなものの中で極大なものとする．
+
+$A$が実はmadなことを示せば証明は終わる．そこで$x \in [\omega]^\omega$を任意にとる．
+$D$が稠密なので，$y \in D$であって$y \subseteq x$となるものをとれる．$A$のとり方より$a \in A$であって，$a \cap y$が無限なものがとれる．したがって$a \cap x$も無限である．よって$A$はmadである．
+\end{proof}
+
+\begin{prop}\label{blassprop}\cite[6.19 Corollary]{blass}
+\begin{align*}
+\h=\min \bigl\{|\mathcal{A}| :{}& \text{$\mathcal{A}$の各メンバーはmadかつ}\\ 
+  & \forall x \in [\omega]^\omega\ \exists A \in \mathcal{A} \ \exists a, b \in A\ (\text{$a \ne b$かつ$a \cap x, b \cap x$はともに無限}) \bigr\}.
+\end{align*}
+\end{prop}
+\begin{proof}
+まず$x \in [\omega]^\omega$とmad集合$A$について
+\begin{equation}
+\exists a, b \in A\ (\text{$a \ne b$かつ$a \cap x, b \cap x$はともに無限}) \iff x \not \in A\down \label{mad}
+\end{equation}
+であることを示そう．
+
+$x \in A \down$とする．
+すると$a \in A$がとれて$x \subset^* a$である．
+$b \in A$について$b \cap x$が無限であるとしよう．
+すると$b \cap a$が無限となるのでほとんど互いに素なことから$a = b$でなければならない．よって式(\ref{mad})の左辺の否定が成り立つ．
+
+$x \not \in A \down$とする．
+まず，$A$がmadなので$a \in A$があって$x \cap a$が無限となる．
+すると$x \not \in A \down$なので$x \not \subseteq^* a$である．
+つまり$x \setminus a$が無限集合である．
+したがって，再び$A$のmad性より$b \in B$があって$(x \setminus a) \cap b$が無限となる．このとき$a \ne b$なので式(\ref{mad})の左辺が導かれた．
+
+以上より，命題の主張の式の右辺は
+\[
+\min \bigl\{|\mathcal{A}| : \text{$\mathcal{A}$の各メンバーはmadかつ$\forall x \in [\omega]^\omega\ \exists A \in \mathcal{A} \ (x \not \in A \down)$} \bigr\}
+\]
+と書き直せる．さらに書き直すと
+\[
+\min \bigl\{|\mathcal{A}| : \text{$\mathcal{A}$の各メンバーはmadかつ$\bigcap_{A \in  \mathcal{A}} A\down = \emptyset$} \bigr\}
+\]
+ともなる．
+
+あとは命題\ref{madprop}より従う．
+\end{proof}
+
+\section{点列コンパクト空間の直積}
+
+
+\begin{defi*}
+$X$を位相空間とする．$X$が{\bfseries 点列コンパクト}であるとはどんな$X$の点列$(x_n)_{n \in \omega}$についても，収束する部分列が存在することを言う．
+すなわち自然数の無限集合$A$があって$(x_n)_{n \in A}$が収束することを言う．
+\end{defi*}
+
+\begin{defi*}
+基数$\mu$は次を満たす最小の基数$\kappa$である．すなわち，点列コンパクト空間の列$(X_\alpha : \alpha < \kappa)$があってその直積$\prod_{\alpha < \kappa} X_\alpha$が点列コンパクトではない．
+\end{defi*}
+
+次の事実の証明は，\cite{fujidig}ですでに書いたので本稿では省略する．
+\begin{fact*}
+$\aleph_1 \le \mu \le 2^{\aleph_0}$.
+\end{fact*}
+
+さて以下の2つが$\mu = \h$を主張するメインの定理である．これらの証明は\cite{simon1993products}によるものである．
+
+\begin{thm}
+$\h \le \mu$.
+\end{thm}
+\begin{proof}
+$\kappa < \h$とする．
+$X_\alpha$ ($\alpha < \kappa$)を点列コンパクト空間として，$X = \prod_{\alpha < \kappa} X_\alpha$とおく．このとき$X$が点列コンパクトなことを示したい．
+
+$(x_n : n \in \omega)$を$X$の点列とする．
+$\alpha < \kappa$について
+\[
+M_\alpha = \{ a \in [\omega]^\omega : \text{$(x_n(\alpha) : n \in a)$が収束する} \}
+\]
+とおく．
+$Q_\alpha$を$M_\alpha$に含まれるようなほとんど互いに素な集合で，かつそのようなものの中で極大なものとする (これはツォルンの補題よりとれる)．
+
+$Q_\alpha$は実はmadである．なぜなら，madでなかったとすると，ある$C \in [\omega]^\omega$があって，$Q_\alpha$のすべてのメンバーとほとんど互いに素である．$Q_\alpha$の極大性より$C$の無限部分集合は$M_\alpha$に入らない．よって$(x_n(\alpha) : n \in C)$のどの部分列も収束しない．これは$X_\alpha$が点列コンパクトなことに反するからである．
+
+さて，$\kappa < \h$なので$\kappa$個のmad集合の族$(Q_\alpha : \alpha < \kappa)$について，ある$t \in [\omega]^\omega$があってどの$\alpha < \kappa$についても唯一の$q_\alpha \in Q_\alpha$があって，$q_\alpha \cap t$が無限となる．
+$Q_\alpha$がmadなので$t \setminus q_\alpha$は有限である．
+
+今$x \in X$を
+\[
+x(\alpha) = \lim_{n \in q_\alpha} x_n(\alpha)
+\]
+と定める ($q_\alpha \in M_\alpha$より極限は存在することに注意)．
+
+点列$(x_n : n \in t)$が$x$に収束することを言おう．
+$x$の開近傍$U$を任意にとる．直積位相の定義より
+\[
+U = \prod_{\alpha < \kappa} U_\alpha
+\]
+でかつ，有限集合$F \subset \kappa$の外の添字$\alpha$では$U_\alpha = X_\alpha$としてよい．
+
+$x$の定義より，どんな$\alpha \in F$についても，ある$n_\alpha \in \omega$があって
+\[
+\forall n \ge n_\alpha \ (n \in Q_\alpha \Rightarrow x_n(\alpha) \in U_\alpha)
+\]
+である．$t \setminus q_\alpha$が有限なので$m_\alpha \ge n_\alpha$が存在して
+\[
+\forall n \ge m_\alpha \ (n \in t \Rightarrow x_n(\alpha) \in U_\alpha)
+\]
+となる．
+よって$n \in t$かつ$n \ge \max\{m_\alpha : \alpha \in F \}$なら$x_n \in U$となる．
+したがって，点列$(x_n : n \in t)$が$x$に収束する．
+\end{proof}
+
+逆向きの不等号を示すためには$\h$個の点列コンパクト空間であって，直積が点列コンパクトでないものを構成する必要がある．そのために次の補題を用意する．
+
+\begin{lem}\label{cptn}
+$A \subset [\omega]^\omega$をmad集合とする．
+$X = \omega \sqcup A$とおく．
+$\omega$の各点は孤立点にして，$a \in A$の近傍基を
+\[
+\{ \{a\} \cup (a \setminus f) : f \in [\omega]^{<\omega} \}
+\]
+で定めることにより$X$に位相を入れる．$Y$を$X$の一点コンパクト化とする．すると，$Y$は点列コンパクトである．
+\end{lem}
+\begin{proof}
+$Y$の無限遠点を$\infty$と書く．
+$(y_n : n \in \omega)$を$Y$の点列とする．この部分列で収束するものの存在を示そう．
+$(y_n : n \in \omega)$の中に$\infty$が無限回現れるならそれでよい．
+そこで$(y_n : n \in \omega)$の中には$\infty$は有限回しか現れないときを考える．
+部分列をとることで$(y_n : n \in \omega)$の中には$\infty$はまったく出現しないとしてよい．
+
+$(y_n : n \in \omega)$の中に自然数が無限回現れる場合を考えよう．
+$(y_n : n \in t)$が項をすべて自然数とする列となる$t \in [\omega]^\omega$をとる．
+$y_n\ (n \in t)$たちは互いに異なるものとしてよい．
+すると自然数の集合$\{y_n : n \in \omega\}$は無限集合だから，$A$のmad性より，ある$a \in A$があって$\{y_n : n \in t\} \cap a$が無限集合となる．
+このとき位相の定め方より，適当に$u \subset t$をとれば$(y_n : n \in u)$は$a$に収束する．
+
+次に$(y_n : n \in \omega)$の中に$A$のメンバーが無限回現れる場合を考える．
+上と同様に$t \in [\omega]^\omega$をとり，$(y_n : n \in t)$は項がすべて$A$のメンバーであり，互いに異なるとする．
+このとき$(y_n : n \in t)$は無限遠点$\infty$に収束する．
+実際，$\infty$の近傍を任意にとると，それは$X$のコンパクト集合$K$の補集合である．
+十分大きい番号$n \in t$で$y_n \not \in K$となることを言えばよい．
+背理法で無限に多くの番号$n\in t$で$y_n \in K$となると仮定する．
+$K$の被覆
+\[K \subseteq \bigcup_{n \in \omega} \{n\} \cup \bigcup_{a \in A} (\{a\} \cup a)\]
+を考えると$K$のコンパクト性より
+\[
+K \subseteq \{0, \dots, n\} \cup a_1 \cup \dots \cup a_m \cup \{a_1, \dots, a_m\}
+\]
+となる$n, m\in \omega$と$a_1, \dots, a_m \in A$をとれる．
+しかし，$K$には無限に多くの$\{y_n : n \in t\}$の元を持つので，$a_1, \dots, a_n$と異なる元$y_{n_0} \in K$をとれる．これは矛盾．
+\end{proof}
+
+\begin{thm}
+$\mu \le \h$.
+\end{thm}
+\begin{proof}
+点列コンパクト空間たち$(Y_\alpha : \alpha < \h)$であってその直積$Y = \prod_{\alpha < \h} Y_\alpha$が点列コンパクトでないものを構成すればよい．
+命題\ref{blassprop}より，mad集合の族$(A_\alpha : \alpha < \h)$であって，
+\[
+\forall x \in [\omega]^\omega\ \exists \alpha \in \h \ \exists a, b \in A_\alpha\ (\text{$a \ne b$かつ$a \cap x, b \cap x$はともに無限}) 
+\]
+を満たすものをとれる．各$\alpha < \h$についてmad集合$A_\alpha$から補題\ref{cptn}の方法によって得られる空間$Y$を$Y_\alpha$とする．
+
+$Y = \prod_{\alpha < \h} Y_\alpha$とし，$Y$の点列$(x_n : n \in \omega)$を
+\[
+x_n(\alpha) = n \ \text{(for each $n \in \omega, \alpha < \h$)}
+\]
+と定める．
+
+$t \in [\omega]^\omega$を任意にとる．
+このとき$(x_n : n \in t)$が収束しないことを示す．
+$(A_\alpha : \alpha < \h)$のとり方より$\alpha < \h$と互いに異なる$a, b \in A_\alpha$があって，$a \cap t$と$b \cap t$がともに無限である．
+
+今，空間$Y_\alpha$において$(n : n \in a \cap t)$は$a$に収束し$(n : n \in b \cap t)$は$b$に収束する．$a$と$b$は異なるので，$(n : n \in t)$は空間$Y_\alpha$で収束しない ($Y_\alpha$はHausdorffであることに注意)．
+つまり点列$(x_n : n \in t)$を$\alpha$成分に射影したものが収束しないので，$(x_n : n \in t)$も収束しない．
+\end{proof}
+
+\nocite{*}
+\printbibliography[title=参考文献]
+
+\end{document}
